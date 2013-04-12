@@ -1,0 +1,25 @@
+{
+  "name": "fql",
+  "version": "0.0.0",
+  "description": "A Language for Manipulating the Ubret Dashboard",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter dot test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edpaget/fql"
+  },
+  "author": "Edward Paget",
+  "license": "GPL",
+  "dependencies" : {
+    "coffee-script" : "1.6.2",
+    "pegjs" : "0.7.0",
+    "uglify-js" : "2.2.5"
+  },
+  "devDependencies" : {
+    "mocha" : "*",
+    "chai" : "*"
+  }
+
+}
