@@ -3,7 +3,7 @@ fs = require 'fs'
 {print} = require 'util'
 
 task 'build', 'Build lib/ from src/', (options) ->
-  coffee = spawn './node_modules/.bin/coffee', ['-c', 'src/fql.coffee']
+  coffee = spawn './node_modules/.bin/coffee', ['-o', 'lib', '-c', 'src/fql.coffee']
   coffee.stderr.on 'data', (data) ->
     process.stderr.write data.toString()
   coffee.stdout.on 'data', (data) ->
