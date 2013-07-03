@@ -22,10 +22,10 @@ class Fql.Number extends Fql.Value
     value.addNumber @
 
   negate: =>
-    -(@num)
+    new Fql.Number(-@num)
 
   reciprocate: =>
-    1/@num
+    new Fql.Number(1/@num)
 
   multiply: (value) =>
     value.multiplyNumber @
@@ -64,10 +64,10 @@ class Fql.Number extends Fql.Value
     new Fql.CFunc((i) => i[name] > @num)
 
   log: ({num}) =>
-    Math.log(@num) / if num then Math.log(num) else 1
+    new Fql.Number(Math.log(@num) / if num then Math.log(num) else 1)
 
   pow: ({num}) => 
-    Math.pow(@num, num)
+    new Fql.Number(Math.pow(@num, num))
 
 class Fql.CFunc extends Fql.Value
   constructor: (@func) ->
@@ -151,25 +151,25 @@ class Fql.Field extends Fql.Value
     value.equalToField @
 
   equalToNumber: (value) =>
-    value.equalToField @
+    vlue.equalToField @
 
   equalToCFunc: (value) =>
     value.equalToField @
 
   equalToField: ({field}) =>
-    new Fql.CFunc((i) => i[field] is i[@field])
+    new Fql.CFunc((i) => i[field] is i[@name])
 
   greaterThan: (value) =>
     value.greaterThanField @
 
   greaterThanNumber: ({num}) =>
-    new Fql.CFunc((i) => num > i[@field])
+    new Fql.CFunc((i) => num > i[@name])
 
   greaterThanCFunc: ({func}) =>
-    new Fql.CFunc((i) => func(i) > i[@field])
+    new Fql.CFunc((i) => func(i) > i[@name])
 
   greaterThanField: ({field}) =>
-    new Fql.CFunc((i) => i[field] > i[@field])
+    new Fql.CFunc((i) => i[field] > i[@name])
 
   multiply: (value) =>
     value.multiplyField @
