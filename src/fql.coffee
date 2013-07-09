@@ -223,7 +223,7 @@ class Fql.Subtract extends Fql.Expression
   constructor: (@exp1, @exp2) ->
 
   eval: =>
-    @exp1.eval().add new Negate(@exp2).eval()
+    @exp1.eval().add new Fql.Negate(@exp2).eval()
 
 class Fql.Negate extends Fql.Expression
   constructor: (@exp) ->

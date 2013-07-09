@@ -30,25 +30,21 @@ comparison
   / ">=" { return Fql.GreaterThanOrEqual; }
   / "<=" { return Fql.LessThanOrEqual; }
 
-rightOperator = additive / subtractive
-
-additive
-  = left:leftOperator _ "+" _ right:rightOperator { return new Fql.Add(left, right) }
+rightOperator 
+  = left:leftOperator _ op:additionOp _ right:rightOperator { return new op(left, right); }
   / leftOperator
 
-subtractive
-  = left:leftOperator _ "-" _ right:rightOperator { return new Fql.Subtract(left, right) }
-  / leftOperator
+additionOp
+  = "-" { return Fql.Subtract; }
+  / "+" { return Fql.Add; }
 
-leftOperator = multiplicative / divisive
-
-multiplicative
-  = left:unary _ "*" _ right:leftOperator { return new Fql.Multiply(left, right) }
+leftOperator 
+  = left:unary _ op:multiplyOp _ right:leftOperator { return new op(left, right); }
   / unary
 
-divisive
-  = left:unary _ "/" _ right:leftOperator { return new Fql.Divide(left, right) }
-  / unary
+multiplyOp
+  = "*" { return Fql.Multiply; }
+  / "/" { return Fql.Divide; }
 
 unary = log / pow / negate / reciprocate
 
