@@ -34,7 +34,24 @@
       });
     });
 
-    describe("language", function() {
+    describe("Filters", function() {
+      it("should use greater than", function() {
+        var filter = Fql.Parser.parse("filter .u > 40")[0].eval()
+        expect(this.data.filter(filter.func)).to.have.length(2);
+      });
+
+      it("should use greater than", function() {
+        var filter = Fql.Parser.parse("filter .u < 40")[0].eval()
+        expect(this.data.filter(filter.func)).to.have.length(9);
+      });
+
+      it("should be able to use arithmatic expressions", function() {
+        var filter = Fql.Parser.parse("filter .u + .g < .z * 10")[0].eval()
+        expect(this.data.filter(filter.func)).to.have.length(7);
+      });
+    });
+
+    describe("Fields", function() {
       beforeEach(function() {
         this.applyField = function(field) {
           return this.data.map(function(i) {
