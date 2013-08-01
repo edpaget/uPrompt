@@ -5,10 +5,10 @@ statement
   / filter
 
 newField
-  = "New Field" _ name:[A-z0-9 ]+ "," _ exp:expression _ LineEnd { return new Fql.NewField(name.join(""), exp); }
+  = "field" _ name:string "," _ exp:expression _ LineEnd { return new Fql.NewField(name, exp); }
 
 filter
-  = "New Filter" _ pred:expression _ LineEnd { return new Fql.Filter(pred); }
+  = "filter" _ pred:expression _ LineEnd { return new Fql.Filter(pred); }
 
 expression
   = predicate
@@ -46,23 +46,19 @@ multiplyOp
   = "*" { return Fql.Multiply; }
   / "/" { return Fql.Divide; }
 
-unary = log / pow / negate / reciprocate
-
-log
-  = "log" _ exp:primary "," base:number { return new Fql.Log(exp, base) }
-  / primary
+unary = pow / log / negate / reciprocate / primary
 
 pow
-  = exp:primary _ "^" _ base:number { return new Fql.Pow(exp, base) }
-  / primary
+  = exp:primary _ "^" _ pow:number {return new Fql.Pow(exp, pow);}
+
+log
+  = "log" _ exp:primary "," _ base:number { return new Fql.Log(exp, base) }
 
 negate
   = "-" exp:primary { return new Fql.Negate(exp) }
-  / primary
 
 reciprocate
   = "recip" _ exp:primary { return new Fql.Reciprocal(exp) }
-  / primary
 
 primary
   = "(" exp:expression ")" { return exp }
@@ -73,10 +69,13 @@ value
   / number 
 
 number 
-  = digits:[0-9.]+ { return new Fql.Number(parseFloat(digits.join(""))) }
+  = digits:[0-9.]+ { return new Fql.Number(parseFloat(digits.join("")));}
 
 field
-  = "." letters:[A-z0-9_]+ {return new Fql.Field(letters.join("")) }
+  = "." letters:[A-z0-9_]+ {return new Fql.Field(letters.join(""));}
+
+string
+  = "'" letters:[A-z0-9 ]+ "'" {return new Fql.String(letters.join("").replace(' ', '_'));}
 
 _ = [ ]?
 

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>uPrompt Test</title>
+  <link rel="stylesheet" href="vendor/mocha.css" type="text/css" media="screen">
+  <script src="vendor/mocha.js"></script>
+  <script src="vendor/chai.js"></script>
+  <script src="vendor/sinon-chai.js"></script>
+  <script src="vendor/sinon.js"></script>
+  <script>
+    mocha.setup('bdd');
+    window.expect = chai.expect;
+  </script>
+  <script src="test.js"></script>
+  <script src="../lib/fql.js"></script>
+  <script src="../lib/fql_grammar.js"></script>
+</head>
+<body>
+  <div id="mocha"></div>
+  <script>
+    mocha.checkLeaks();
+    mocha.globals(['navigator', 'constructor', 'top']);
+    mocha.run();
+  </script>
+</body>
+</html>

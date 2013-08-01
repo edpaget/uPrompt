@@ -18,8 +18,7 @@
     "uglify-js" : "2.2.5"
   },
   "devDependencies" : {
-    "mocha" : "*",
-    "chai" : "*"
+    "node-static": "*"
   }
 
 }

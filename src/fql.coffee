@@ -6,6 +6,9 @@ class Fql.Value
   eval: => 
     @
 
+class Fql.String extends Fql.Value
+  constructor: (@string) ->
+
 class Fql.Number extends Fql.Value
   constructor: (@num) ->
 
@@ -24,7 +27,7 @@ class Fql.Number extends Fql.Value
   negate: =>
     new Fql.Number(-@num)
 
-  reciprocate: =>
+  reciprocal: =>
     new Fql.Number(1/@num)
 
   multiply: (value) =>
@@ -87,7 +90,7 @@ class Fql.CFunc extends Fql.Value
   negate: =>
     new Fql.CFunc((i) => -(@func(i)))
 
-  reciprocate: =>
+  reciprocal: =>
     new Fql.CFunc((i) => 1/@func(i))
 
   equalTo: (value) =>
@@ -186,7 +189,7 @@ class Fql.Field extends Fql.Value
   negate: =>
     new Fql.CFunc((i) => -(i[@name]))
 
-  reciprocate: =>
+  reciprocal: =>
     new Fql.CFunc((i) => 1/(i[@name]))
 
   log: ({num}) =>
@@ -211,7 +214,7 @@ class Fql.NewField extends Fql.Expression
   constructor: (@fieldName, @funcExp) ->
 
   eval: =>
-    {field: @fieldName, func: @funcExp.eval().func}
+    {field: @fieldName.string, func: @funcExp.eval().func}
 
 class Fql.Add extends Fql.Expression
   constructor: (@exp1, @exp2) ->
@@ -237,22 +240,23 @@ class Fql.Multiply extends Fql.Expression
   eval: =>
     @exp1.eval().multiply @exp2.eval()
 
-class Fql.Reciprocate extends Fql.Expression
+class Fql.Reciprocal extends Fql.Expression
   constructor: (@exp) ->
 
   eval: =>
-    @exp.eval().reciprocate()
+    @exp.eval().reciprocal()
 
 class Fql.Divide extends Fql.Expression
   constructor: (@exp1, @exp2) ->
 
   eval: =>
-    @exp1.eval().muliply new Reciprocate(@exp2).eval()
+    @exp1.eval().multiply new Fql.Reciprocal(@exp2).eval()
 
 class Fql.Log extends Fql.Expression
   constructor: (@exp, @base) ->
 
   eval: =>
+    console.log(@base)
     if @base instanceof Fql.Number
       @exp.eval().log @base
     else
@@ -262,6 +266,7 @@ class Fql.Pow extends Fql.Expression
   constructor: (@exp, @pow) ->
 
   eval: =>
+    console.log(@pow)
     if @pow instanceof Fql.Number
       @exp.eval().pow @pow
     else
