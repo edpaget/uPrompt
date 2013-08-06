@@ -67,6 +67,7 @@ primary
 value 
   = field
   / number 
+  / string
 
 number 
   = digits:[0-9.]+ { return new Fql.Number(parseFloat(digits.join("")));}

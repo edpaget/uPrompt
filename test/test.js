@@ -1,17 +1,17 @@
 (function(){
   describe("uPrompt", function() {
     beforeEach(function() {
-      this.data = [{u: 33.4, g: 2.34, r: 22, i: 44, z: 1.50},
-                   {u: 31.0, g: 2.84, r: 23, i: 14, z: 2.50},
-                   {u: 34.53, g: 2.04, r: 29, i: 23, z: 3.50},
-                   {u: 38.34, g: 2.48, r: 28, i: 53, z: 4.50},
-                   {u: 35.6, g: 2.09, r: 28, i: 74, z: 5.50},
-                   {u: 29.1, g: 2.91, r: 27, i: 84, z: 6.50},
-                   {u: 34.0, g: 2.43, r: 22, i: 24, z: 7.50},
-                   {u: 45.8, g: 2.68, r: 21, i: 41, z: 8.50},
-                   {u: 18.943, g: 2.10, r: 24, i: 18, z: 9.50},
-                   {u: 32.22, g: 2.40, r: 29, i: 34, z: 10.50},
-                   {u: 1230, g: 22.0, r: 20, i: 14, z: 11.50}]
+      this.data = [{u: 33.4, g: 2.34, r: 22, i: 44, z: 1.50, p: 'test'},
+                   {u: 31.0, g: 2.84, r: 23, i: 14, z: 2.50, p: 'not'},
+                   {u: 34.53, g: 2.04, r: 29, i: 23, z: 3.50, p: 'test'},
+                   {u: 38.34, g: 2.48, r: 28, i: 53, z: 4.50, p: 'not'},
+                   {u: 35.6, g: 2.09, r: 28, i: 74, z: 5.50, p: 'test'},
+                   {u: 29.1, g: 2.91, r: 27, i: 84, z: 6.50, p: 'not'},
+                   {u: 34.0, g: 2.43, r: 22, i: 24, z: 7.50, p: 'test'},
+                   {u: 45.8, g: 2.68, r: 21, i: 41, z: 8.50, p: 'not'},
+                   {u: 18.943, g: 2.10, r: 24, i: 18, z: 9.50, p: 'test'},
+                   {u: 32.22, g: 2.40, r: 29, i: 34, z: 10.50, p: 'test'},
+                   {u: 1230, g: 22.0, r: 20, i: 14, z: 11.50, p: 'test'}]
     });
     describe("grammar", function() {
       it("should parse the following filter statements", function() {
@@ -32,9 +32,14 @@
           expect(function() {Fql.Parser.parse('filter u + .g');})
             .to.throw(/Expected/);
       });
+
     });
 
     describe("Filters", function() {
+      it("should allow string comparisons", function() {
+        var filter = Fql.Parser.parse("filter .p = 'test'")[0].eval();
+        expect(this.data.filter(filter.func)).to.have.length(7);
+      });
       it("should use greater than", function() {
         var filter = Fql.Parser.parse("filter .u > 40")[0].eval()
         expect(this.data.filter(filter.func)).to.have.length(2);

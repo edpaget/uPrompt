@@ -9,6 +9,21 @@ class Fql.Value
 class Fql.String extends Fql.Value
   constructor: (@string) ->
 
+  equalTo: (value) =>
+    value.equalToString(@)
+
+  equalToNumber: =>
+    new Fql.CFunc(=> false)
+
+  equalToField: ({name}) =>
+    new Fql.CFunc((i) => i[name] is @string)
+
+  equalToCFunc: ({func}) =>
+    new Fql.CFunc((i) => @string is func(i))
+
+  equalToString: ({string}) =>
+    new Fql.CFunc(=> string is @string)
+
 class Fql.Number extends Fql.Value
   constructor: (@num) ->
 
@@ -53,6 +68,9 @@ class Fql.Number extends Fql.Value
 
   equalToField: ({name}) =>
     new Fql.CFunc((i) => @num is i[name])
+
+  equalToString: (string) =>
+    string.equalToNumber @
 
   greaterThan: (value) =>
     value.greaterThanNumber @
@@ -104,6 +122,9 @@ class Fql.CFunc extends Fql.Value
 
   equalToField: ({field}) =>
     new Fql.CFunc((i) => @func(i) is i[field])
+
+  equalToString: (string) =>
+    string.equalToCFunc @
 
   greaterThan: (value) =>
     value.greaterThanCFunc @
@@ -161,6 +182,9 @@ class Fql.Field extends Fql.Value
 
   equalToField: ({field}) =>
     new Fql.CFunc((i) => i[field] is i[@name])
+
+  equalToString: (string) =>
+    string.equalToField @
 
   greaterThan: (value) =>
     value.greaterThanField @
