@@ -238,7 +238,7 @@ class Fql.NewField extends Fql.Expression
   constructor: (@fieldName, @funcExp) ->
 
   eval: =>
-    {field: @fieldName.string, func: @funcExp.eval().func}
+    {field: @fieldName.string.replace(' ', '_'), func: @funcExp.eval().func}
 
 class Fql.Add extends Fql.Expression
   constructor: (@exp1, @exp2) ->

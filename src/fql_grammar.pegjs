@@ -76,7 +76,7 @@ field
   = "." letters:[A-z0-9_]+ {return new Fql.Field(letters.join(""));}
 
 string
-  = "'" letters:[A-z0-9-_!+*/ ]+ "'" {return new Fql.String(letters.join("").replace(' ', '_'));}
+  = "'" letters:[A-z0-9-_!+*/ ]+ "'" {return new Fql.String(letters.join(""));}
 
 _ = [ ]?
 
