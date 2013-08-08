@@ -1,6 +1,6 @@
 {
   "name": "fql",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A Language for Manipulating the Ubret Dashboard",
   "main": "index.js",
   "scripts": {

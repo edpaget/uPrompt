@@ -157,7 +157,9 @@ class Fql.CFunc extends Fql.Value
     new Fql.CFunc((i) => Math.pow(@func(i), num))
 
 class Fql.Field extends Fql.Value
-  constructor: (@name) ->
+  constructor: (s) ->
+    @name = s.string.replace(/(\b[A-Z])/g, (char) -> 
+      char.toLowerCase()).replace(" ", "_")
 
   add: (value) =>
     value.addField @
@@ -280,7 +282,6 @@ class Fql.Log extends Fql.Expression
   constructor: (@exp, @base) ->
 
   eval: =>
-    console.log(@base)
     if @base instanceof Fql.Number
       @exp.eval().log @base
     else
@@ -290,7 +291,6 @@ class Fql.Pow extends Fql.Expression
   constructor: (@exp, @pow) ->
 
   eval: =>
-    console.log(@pow)
     if @pow instanceof Fql.Number
       @exp.eval().pow @pow
     else

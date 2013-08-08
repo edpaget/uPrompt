@@ -73,7 +73,8 @@ number
   = digits:[0-9.]+ { return new Fql.Number(parseFloat(digits.join("")));}
 
 field
-  = "." letters:[A-z0-9_]+ {return new Fql.Field(letters.join(""));}
+  = "." letters:[A-z0-9_]+ {return new Fql.Field(new Fql.String(letters.join("")));}
+  / "." string:string {return new Fql.Field(string);}
 
 string
   = "'" letters:[A-z0-9-_!+*/ ]+ "'" {return new Fql.String(letters.join(""));}

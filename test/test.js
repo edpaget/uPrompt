@@ -1,23 +1,23 @@
 (function(){
   describe("uPrompt", function() {
     beforeEach(function() {
-      this.data = [{u: 33.4, g: 2.34, r: 22, i: 44, z: 1.50, p: 'test'},
-        {u: 31.0, g: 2.84, r: 23, i: 14, z: 2.50, p: 'not'},
-        {u: 34.53, g: 2.04, r: 29, i: 23, z: 3.50, p: 'test'},
-        {u: 38.34, g: 2.48, r: 28, i: 53, z: 4.50, p: 'not'},
-        {u: 35.6, g: 2.09, r: 28, i: 74, z: 5.50, p: 'test'},
-        {u: 29.1, g: 2.91, r: 27, i: 84, z: 6.50, p: 'test not'},
-        {u: 34.0, g: 2.43, r: 22, i: 24, z: 7.50, p: 'test'},
-        {u: 45.8, g: 2.68, r: 21, i: 41, z: 8.50, p: 'not'},
-        {u: 18.943, g: 2.10, r: 24, i: 18, z: 9.50, p: 'test'},
-        {u: 32.22, g: 2.40, r: 29, i: 34, z: 10.50, p: 'test'},
-        {u: 1230, g: 22.0, r: 20, i: 14, z: 11.50, p: 'test'}]
+      this.data = [{u: 33.4, g: 2.34, r: 22, i: 44, z_blah: 1.50, p: 'test'},
+        {u: 31.0, g: 2.84, r: 23, i: 14, z_blah: 2.50, p: 'not'},
+        {u: 34.53, g: 2.04, r: 29, i: 23, z_blah: 3.50, p: 'test'},
+        {u: 38.34, g: 2.48, r: 28, i: 53, z_blah: 4.50, p: 'not'},
+        {u: 35.6, g: 2.09, r: 28, i: 74, z_blah: 5.50, p: 'test'},
+        {u: 29.1, g: 2.91, r: 27, i: 84, z_blah: 6.50, p: 'test not'},
+        {u: 34.0, g: 2.43, r: 22, i: 24, z_blah: 7.50, p: 'test'},
+        {u: 45.8, g: 2.68, r: 21, i: 41, z_blah: 8.50, p: 'not'},
+        {u: 18.943, g: 2.10, r: 24, i: 18, z_blah: 9.50, p: 'test'},
+        {u: 32.22, g: 2.40, r: 29, i: 34, z_blah: 10.50, p: 'test'},
+        {u: 1230, g: 22.0, r: 20, i: 14, z_blah: 11.50, p: 'test'}]
     });
     describe("grammar", function() {
       it("should parse the following filter statements", function() {
         expect(Fql.Parser.parse("filter .u > .g")).to.be.ok;
         expect(Fql.Parser.parse("filter .u < .g")).to.be.ok;
-        expect(Fql.Parser.parse("filter .u > .g + (.i * .z)")).to.be.ok;
+        expect(Fql.Parser.parse("filter .u > .g + (.i * .z_blah)")).to.be.ok;
         expect(Fql.Parser.parse("filter .u < .g + log .i, 10")).to.be.ok;
       });
 
@@ -25,7 +25,7 @@
         expect(Fql.Parser.parse("field 'color', .u - .g")).to.be.ok;
         expect(Fql.Parser.parse("field 'crazy named field', recip .u")).to.be.ok;
         expect(Fql.Parser.parse("field 'stuff', .u - -.u")).to.be.ok;
-        expect(Fql.Parser.parse("field 'other things', .z * (.i / 3)")).to.be.ok;
+        expect(Fql.Parser.parse("field 'other things', .z_blah * (.i / 3)")).to.be.ok;
       });
 
       it("should fail to parse the following statement", function() {
@@ -56,7 +56,7 @@
       });
 
       it("should be able to use arithmatic expressions", function() {
-        var filter = Fql.Parser.parse("filter .u + .g < .z * 10")[0].eval()
+        var filter = Fql.Parser.parse("filter .u + .g < .'Z Blah' * 10")[0].eval()
         expect(this.data.filter(filter.func)).to.have.length(7);
       });
     });
@@ -102,7 +102,7 @@
       });
 
       it("should apply subtract", function() {
-        var field = Fql.Parser.parse("field 'stuff', .z - 0.5")[0].eval();
+        var field = Fql.Parser.parse("field 'stuff', .z_blah - 0.5")[0].eval();
         expect(this.applyField(field)).to.have.deep.property('[5].stuff')
         .and.equal(6);
       });
@@ -135,7 +135,7 @@
       });
 
       it("should create a new field", function() {
-        var statement = "field 'stuff', .u + (-.g + .r ^ 2 * 7) + log (.i - .z), 10"
+        var statement = "field 'stuff', .u + (-.g + .r ^ 2 * 7) + log (.i - .z_blah), 10"
         var field = Fql.Parser.parse(statement)[0].eval()
         expect(this.applyField(field)).to.have.deep.property('[0].stuff')
         .and.be.within(3420.688, 3420.689);
